@@ -92,7 +92,7 @@ npm install
 npm run dev
 ```
 
-4. Open http://http://localhost:8080 in your browser
+4. Open http://localhost:8080 in your browser
 
 ### Build for Production
 
