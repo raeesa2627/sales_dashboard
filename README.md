@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Sales Dashboard
 
 A modern, interactive sales analytics dashboard built with React, TypeScript, and Tailwind CSS. View and analyze sales data across multiple years with various chart types and filtering options.
@@ -131,3 +132,6 @@ npm run build
 ## 📄 License
 
 MIT License
+=======
+# sales_dashboard
+>>>>>>> 3cb732b623281af90f51ffebff247d109e0fb973
