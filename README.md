@@ -92,7 +92,7 @@ npm install
 npm run dev
 ```
 
-4. Open http://localhost:5173 in your browser
+4. Open http://http://localhost:8080 in your browser
 
 ### Build for Production
 
@@ -129,9 +129,5 @@ npm run build
 - [ ] Comparison mode (overlay multiple years)
 - [ ] More chart types (Area, Scatter, Radar)
 
-## 📄 License
-
-MIT License
-=======
 # sales_dashboard
 >>>>>>> 3cb732b623281af90f51ffebff247d109e0fb973
