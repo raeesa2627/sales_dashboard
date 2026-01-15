@@ -55,6 +55,10 @@ const Dashboard = () => {
     { type: "pie" as ChartType, icon: PieChart, label: "Pie" },
   ];
 
+  const handleResetFilters = () => {
+  setThreshold(0);
+};
+
   return (
     <DashboardLayout>
       <div className="space-y-8">
@@ -89,6 +93,16 @@ const Dashboard = () => {
               }
             >
               {renderChart()}
+              {threshold > 0 && (
+    <div className="mt-4 flex justify-end">
+      <button
+        onClick={handleResetFilters}
+        className="text-sm px-3 py-1 rounded-md bg-muted hover:bg-muted/80 transition"
+      >
+        Reset Filter
+      </button>
+    </div>
+  )}
             </ChartCard>
           </div>
 
@@ -103,14 +117,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {threshold > 0 && (
-          <div className="glass rounded-lg p-4 animate-scale-in">
-            <p className="text-sm text-muted-foreground">
-              Showing <span className="text-primary font-semibold">{filteredData.length}</span> months 
-              with sales above <span className="text-primary font-semibold">${threshold.toLocaleString()}</span>
-            </p>
-          </div>
-        )}
+        
+
+
       </div>
     </DashboardLayout>
   );
