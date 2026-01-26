@@ -22,21 +22,49 @@ type ChartType = "bar" | "line" | "pie";
 
 const Dashboard = () => {
   const years = getAllYears();
+
   const [selectedYear, setSelectedYear] = useState(2024);
   const [chartType, setChartType] = useState<ChartType>("bar");
+
+  // threshold input value
   const [threshold, setThreshold] = useState(0);
 
-  const currentData = useMemo(() => getDataByYear(selectedYear), [selectedYear]);
-  const previousData = useMemo(() => getDataByYear(selectedYear - 1), [selectedYear]);
-  
+  // applied threshold (Apply button ke baad)
+  const [appliedThreshold, setAppliedThreshold] = useState(0);
+
+  const currentData = useMemo(
+    () => getDataByYear(selectedYear),
+    [selectedYear]
+  );
+
+  const previousData = useMemo(
+    () => getDataByYear(selectedYear - 1),
+    [selectedYear]
+  );
+
+  // filter ONLY based on appliedThreshold
   const filteredData = useMemo(() => {
     if (!currentData) return [];
-    return filterByThreshold(currentData.data, threshold);
-  }, [currentData, threshold]);
+    return filterByThreshold(currentData.data, appliedThreshold);
+  }, [currentData, appliedThreshold]);
 
-  const categoryData = useMemo(() => getCategoryBreakdown(selectedYear), [selectedYear]);
+  const categoryData = useMemo(
+    () => getCategoryBreakdown(selectedYear),
+    [selectedYear]
+  );
 
   if (!currentData) return null;
+
+  // Apply button
+  const handleApplyFilter = () => {
+    setAppliedThreshold(threshold);
+  };
+
+  // Reset button
+  const handleResetFilters = () => {
+    setThreshold(0);
+    setAppliedThreshold(0);
+  };
 
   const renderChart = () => {
     switch (chartType) {
@@ -55,13 +83,10 @@ const Dashboard = () => {
     { type: "pie" as ChartType, icon: PieChart, label: "Pie" },
   ];
 
-  const handleResetFilters = () => {
-  setThreshold(0);
-};
-
   return (
     <DashboardLayout>
       <div className="space-y-8">
+        {/* Header with threshold input */}
         <DashboardHeader
           years={years}
           selectedYear={selectedYear}
@@ -70,13 +95,20 @@ const Dashboard = () => {
           onThresholdChange={setThreshold}
         />
 
-        <StatsGrid data={currentData} previousYearData={previousData} />
+        <StatsGrid
+          data={currentData}
+          previousYearData={previousData}
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <ChartCard
               title="Sales Overview"
-              description={`Monthly ${chartType === "pie" ? "category distribution" : "sales and profit"} for ${selectedYear}`}
+              description={`Monthly ${
+                chartType === "pie"
+                  ? "category distribution"
+                  : "sales and profit"
+              } for ${selectedYear}`}
               delay={400}
               actions={
                 <div className="flex gap-2">
@@ -92,17 +124,35 @@ const Dashboard = () => {
                 </div>
               }
             >
+              {/* ✅ OPTION 2: Badge showing applied threshold */}
+              {appliedThreshold > 0 && (
+                <div className="mb-3">
+                  <span className="inline-flex items-center rounded-full bg-primary/10 text-primary px-3 py-1 text-xs font-medium">
+                    Min Sales ≥ ${appliedThreshold}
+                  </span>
+                </div>
+              )}
+
               {renderChart()}
-              {threshold > 0 && (
-    <div className="mt-4 flex justify-end">
-      <button
-        onClick={handleResetFilters}
-        className="text-sm px-3 py-1 rounded-md bg-muted hover:bg-muted/80 transition"
-      >
-        Reset Filter
-      </button>
-    </div>
-  )}
+
+              {/* Apply + Reset buttons */}
+              <div className="mt-4 flex justify-end gap-2">
+                <button
+                  onClick={handleApplyFilter}
+                  className="px-4 py-2 text-sm rounded-md bg-primary text-white hover:bg-primary/90 transition"
+                >
+                  Apply Filter
+                </button>
+
+                {appliedThreshold > 0 && (
+                  <button
+                    onClick={handleResetFilters}
+                    className="px-4 py-2 text-sm rounded-md bg-muted hover:bg-muted/80 transition"
+                  >
+                    Reset Filter
+                  </button>
+                )}
+              </div>
             </ChartCard>
           </div>
 
@@ -116,10 +166,6 @@ const Dashboard = () => {
             </ChartCard>
           </div>
         </div>
-
-        
-
-
       </div>
     </DashboardLayout>
   );
