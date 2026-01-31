@@ -38,13 +38,15 @@ const DashboardHeader = ({
             selectedYear={selectedYear}
             onYearChange={onYearChange}
           />
-          <div className="w-full sm:w-64">
-            <FilterInput
-              value={threshold}
-              onChange={onThresholdChange}
-              placeholder="Filter by min sales ($)"
-            />
-          </div>
+          <div className="w-full sm:min-w-[360px] lg:min-w-[420px]">
+
+  <FilterInput
+    value={threshold}
+    onChange={onThresholdChange}
+    placeholder="Filter by min sales ($)"
+  />
+</div>
+
         </div>
       </div>
     </header>
